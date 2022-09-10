@@ -1,7 +1,7 @@
 # from https://github.com/man1/Python-LCS/blob/master/lcs.py
 
 ### solve the longest common subsequence problem
-
+"""
 sub LLCS {
   my ($self,$X,$Y) = @_;
 
@@ -33,9 +33,10 @@ sub LLCS {
   }
   return ($c->[1][$n]);
 }
+"""
 
 # get the matrix of LCS lengths at each sub-step of the recursive process
-# (m+1 by n+1, where m=len(list1) & n=len(list2) ... it's one larger in each direction 
+# (m+1 by n+1, where m=len(list1) & n=len(list2) ... it's one larger in each direction
 # so we don't have to special-case the x-1 cases at the first elements of the iteration
 def lcs_mat(list1, list2):
 	m = len(list1)
@@ -49,7 +50,8 @@ def lcs_mat(list1, list2):
 				# if it's the same element, it's one longer than the LCS of the truncated lists
 				mat[row][col] = mat[row - 1][col - 1] + 1
 			else:
-				# they're not the same, so it's the the maximum of the lengths of the LCSs of the two options (different list truncated in each case)
+				# they're not the same, so it's the the maximum of the lengths
+				# of the LCSs of the two options (different list truncated in each case)
 				mat[row][col] = max(mat[row][col - 1], mat[row - 1][col])
 	# the matrix is complete
 	return mat
@@ -57,7 +59,8 @@ def lcs_mat(list1, list2):
 # backtracks all the LCSs through a provided matrix
 def all_lcs(lcs_dict, mat, list1, list2, index1, index2):
 	# if we've calculated it already, just return that
-	if (lcs_dict.has_key((index1, index2))): return lcs_dict[(index1, index2)]
+	# https://stackoverflow.com/questions/33727149/dict-object-has-no-attribute-has-key
+	if (lcs_dict.__contains__((index1, index2))): return lcs_dict[(index1, index2)]
 	# otherwise, calculate it recursively
 	if (index1 == 0) or (index2 == 0): # base case
 		return [[]]
@@ -86,17 +89,31 @@ def lcs(list1, list2):
 	# start the process...
 	return all_lcs(mapping, lcs_mat(list1, list2), list1, list2, len(list1), len(list2));
 
+# return the length of LCS
+def llcs(list1,list2):
+    mat = lcs_mat(list1, list2)
+    return mat[-1][-1]
+
 ### main ###
 
 def main():
     # get two lists
 	f = open("lists.txt")
-	contents = f.read().split("\n")
-	l1 = [int(i) for i in contents[0].split(",")]
-	l2 = [int(i) for i in contents[1].split(",")]
+	contents = f.read().split("\t")
+	# l1 = [str(i) for i in contents[0].split(",")]
+	print(contents[0])
+	l1 = list(contents[0])
+	print(l1)
+	# l2 = [str(i) for i in contents[1].split(",")]
+	print(contents[1])
+	l2 = list(contents[1])
+	print(l2)
+	expect = int(contents[2])
 	lists = lcs(l1, l2)
 	for l in lists:
-		print l
+		print(l)
+
+	print(llcs(l1, l2))
 
 if __name__ == "__main__":
     main()
