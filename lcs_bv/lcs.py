@@ -97,23 +97,14 @@ def llcs(list1,list2):
 ### main ###
 
 def main():
-    # get two lists
-	f = open("lists.txt")
-	contents = f.read().split("\t")
-	# l1 = [str(i) for i in contents[0].split(",")]
-	print(contents[0])
-	l1 = list(contents[0])
-	print(l1)
-	# l2 = [str(i) for i in contents[1].split(",")]
-	print(contents[1])
-	l2 = list(contents[1])
-	print(l2)
-	expect = int(contents[2])
-	lists = lcs(l1, l2)
-	for l in lists:
-		print(l)
+	f = open("test_llcs.txt")
+	lines = f.read().split("\n")
 
-	print(llcs(l1, l2))
+	# l1 = [str(i) for i in contents[0].split(",")]
+	for line in lines:
+	    str1, str2, expect = line.split(",")
+
+	    print(llcs(list(str1), list(str2)))
 
 if __name__ == "__main__":
     main()
